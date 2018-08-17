@@ -8,6 +8,7 @@ contract Campaign {
     bool complete;
   }
 
+  Request[] public requests;
   address public manager;
   uint public minimumContribution;
   address[] public approvers;
@@ -26,5 +27,16 @@ contract Campaign {
     require(msg.value > minimumContribution);
 
     approvers.push(msg.sender);
+  }
+
+  function createRequest(string description, uint value, address recipient) public restricted {
+    Request newRequest = Request({
+      description: description,
+      value: value,
+      recipient: recipient,
+      completed: false
+    });
+
+    requests.push(newRequest);
   }
 }
