@@ -1,18 +1,18 @@
 pragma solidity ^0.4.17;
 
 contract CampaignFactory {
-    address[] public deployedCampaigns;
+  address[] public deployedCampaigns;
 
-    function createCampaign(uint minimum) public {
-        address newCampaign = new Campaign(minimum, msg.sender);
-        deployedCampaigns.push(newCampaign);
-    }
+  function createCampaign(uint minimum) public {
+      address newCampaign = new Campaign(minimum, msg.sender);
+      deployedCampaigns.push(newCampaign);
+  }
 
-    function getDeployedCampaigns() public view returns (address[]) {
-        return deployedCampaigns;
-    }
-
+  function getDeployedCampaigns() public view returns (address[]) {
+      return deployedCampaigns;
+  }
 }
+
 contract Campaign {
   struct Request {
     string description;
@@ -26,7 +26,7 @@ contract Campaign {
   Request[] public requests;
   address public manager;
   uint public minimumContribution;
-  mapping(address => bool) public approvers;
+  mapping(address => bool) public contributors;
   uint public contributorsCount;
 
   modifier restricted() {
@@ -42,12 +42,13 @@ contract Campaign {
   function contribute() public payable {
     require(msg.value > minimumContribution);
 
-    approvers[msg.sender] = true;
+    contributors[msg.sender] = true;
     contributorsCount++;
   }
 
   function createRequest(string description, uint value, address recipient) public restricted {
-    require(approvers[msg.sender]);
+    require(contributors[msg.sender]);
+
     Request memory newRequest = Request({
       description: description,
       value: value,
@@ -61,7 +62,7 @@ contract Campaign {
 
   function approveRequest(uint index) public {
     Request storage request = requests[index];
-    require(approvers[msg.sender]);
+    require(contributors[msg.sender]);
     require(!request.approvals[msg.sender]);
 
     request.approvals[msg.sender] = true;
