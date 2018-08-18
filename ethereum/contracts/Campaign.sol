@@ -38,19 +38,18 @@ contract Campaign {
       value: value,
       recipient: recipient,
       complete: false,
-      approvalCount: 0,
+      approvalCount: 0
     });
 
     requests.push(newRequest);
   }
 
-  function approveRequest(uint index) {
+  function approveRequest(uint index) public {
     Request storage request = requests[index];
-
     require(approvers[msg.sender]);
     require(!request.approvals[msg.sender]);
 
-    request.approval[msg.sender] = true;
+    request.approvals[msg.sender] = true;
     request.approvalCount++;
   }
 }
