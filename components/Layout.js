@@ -4,10 +4,10 @@ import Header from "./Header";
 
 export default props => {
   return (
-    <div>
+    <Container>
       <Header />
       {props.children}
       <h2>Im a header</h2>
-    </div>
+    </Container>
   );
 };
