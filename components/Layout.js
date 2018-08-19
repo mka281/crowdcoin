@@ -1,10 +1,11 @@
 import React from "react";
 import { Container } from "semantic-ui-react";
+import Header from "./Header";
 
 export default props => {
   return (
     <div>
-      <h1>Im a header</h1>
+      <Header />
       {props.children}
       <h2>Im a header</h2>
     </div>
